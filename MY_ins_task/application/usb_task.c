@@ -7,25 +7,30 @@
 
 extern fp32 jiaodu[3];
 extern fp32 yaw,pitch;
-uint8_t vofa[20];
-
+extern fp32 pout_s,pout,yout,yout_s;
+extern int16_t i1;
+uint8_t vofa[24];
+fp32 m;
 
 
 
 void my_usb(void const * argument)
 {
-	vofa[16]=0x00;
-	vofa[17]=0x00;
-	vofa[18]=0x80;
-	vofa[19]=0x7F;
+	
+	vofa[20]=0x00;
+	vofa[21]=0x00;
+	vofa[22]=0x80;
+	vofa[23]=0x7F;
   while(1)
 	{
+		m=(float)i1;
 		
 		*(float *)&vofa[0]=jiaodu[0];
 		*(float *)&vofa[4]=jiaodu[1];
 		*(float *)&vofa[8]=jiaodu[2];
-		*(float *)&vofa[12]=pitch;
-		CDC_Transmit_FS(vofa	,20);
+		*(float *)&vofa[12]=yaw;
+		*(float *)&vofa[16]=pitch;
+		CDC_Transmit_FS(vofa	,24);
 		vTaskDelay(3);
 	}
 }
